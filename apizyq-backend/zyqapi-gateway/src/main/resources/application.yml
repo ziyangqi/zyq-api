@@ -1,0 +1,36 @@
+server:
+  port: 8090
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - AddResponseHeader=source, zyq
+      routes:
+        # ???????"api_route"?????,???????"/api/"?????,??"/api/user",
+        # ?????????"http://localhost:8123"??????
+        - id: api_route
+          uri: http://localhost:8123
+          predicates:
+            - Path=/api/**
+  main:
+    web-application-type: reactive
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          gateway: trace
+
+
+dubbo:
+  application:
+    # 设置应用的名称
+    name: dubbo-springboot-demo-consumer
+  # 指定使用 Dubbo 协议，端口设置为 22222
+  protocol:
+    name: dubbo
+    port: 23331
+  registry:
+    # 配置注册中心为 Nacos，使用的地址是 nacos://localhost:8848
+    address: nacos://localhost:8848
+
